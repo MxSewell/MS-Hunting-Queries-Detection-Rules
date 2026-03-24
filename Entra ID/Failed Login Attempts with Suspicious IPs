@@ -1,0 +1,5 @@
+EntraIdSignInEvents
+| where IPAddress in ("104.224.65.136")
+| where ErrorCode != 0
+    or ErrorCode == 0
+| project Timestamp, AccountUpn, Application, ErrorCode, IPAddress, City, State, UserAgent

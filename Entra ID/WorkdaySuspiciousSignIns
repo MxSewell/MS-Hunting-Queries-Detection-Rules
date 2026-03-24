@@ -1,0 +1,15 @@
+
+Microsoft Defender XDR
+'' KQL
+EntraIdSignInEvents
+| where Application == "Workday Prod"
+| where isnotempty(parse_ipv4(IPAddress))            // IPv4 only
+| where ipv4_is_private(IPAddress) == false          // exclude RFC1918
+| where IPAddress !in ("208.97.28.170","204.27.160.2", "97.64.233.66")
+| where DeviceTrustType != "Hybrid Azure AD joined"
+| where RiskLevelDuringSignIn != "none"
+| where RiskLevelAggregated >= 1
+| project Timestamp, AccountUpn, IPAddress, OSPlatform, UserAgent, Browser, City, 
+        State, RiskLevelAggregated, RiskLevelDuringSignIn, RiskState
+| order by IPAddress desc 
+
