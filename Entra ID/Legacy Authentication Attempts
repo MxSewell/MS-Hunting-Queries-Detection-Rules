@@ -1,0 +1,4 @@
+EntraIdSignInEvents
+| where ClientAppUsed == "Other clients"
+| project Timestamp, Application, AccountUpn, ErrorCode, ClientAppUsed, UserAgent, OSPlatform, Browser
+| order by Timestamp, AccountUpn desc

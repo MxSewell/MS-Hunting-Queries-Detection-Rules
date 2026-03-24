@@ -1,0 +1,6 @@
+EntraIdSignInEvents
+| where Timestamp > ago(30d)
+| where ErrorCode == "50126"
+| summarize Users=dcount(AccountUpn), Attempts=count()
+  by IPAddress
+| where Users >= 5

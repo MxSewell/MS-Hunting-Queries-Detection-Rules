@@ -1,0 +1,5 @@
+EntraIdSignInEvents
+| where Timestamp >= ago(24h)
+| where Application == "QuickCharge-Mobile" and ErrorCode == 0
+| project Timestamp, Application, AccountUpn, UserAgent, LogonType, IPAddress
+| order by Timestamp desc
