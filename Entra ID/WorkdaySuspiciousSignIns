@@ -1,6 +1,3 @@
-
-Microsoft Defender XDR
-'' KQL
 EntraIdSignInEvents
 | where Application == "Workday Prod"
 | where isnotempty(parse_ipv4(IPAddress))            // IPv4 only

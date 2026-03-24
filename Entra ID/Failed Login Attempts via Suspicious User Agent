@@ -1,0 +1,15 @@
+let SuspiciousUAs = dynamic([
+    "axios","curl","okhttp","Go-http-client","WinHTTP", "fasthttp", "cli",
+    "PowerShell","zgrab","Nmap","sqlmap","okta","HeadlessChrome", "resty",
+    "PhantomJS","Selenium","node-fetch","libwww-perl","python", "AADInternals"]);
+EntraIdSignInEvents
+| where Timestamp >= ago(24h)
+| where LogonType != @"[""nonInteractiveUser""]"
+| where (tostring(ErrorCode) in (dynamic(["50126","50053","50074","50076","50057","500121"]))
+        or isempty(ErrorCode) or tostring(ErrorCode) == "0")
+    and tostring(UserAgent) has_any (SuspiciousUAs)
+| summarize Users=dcount(AccountUpn), Attempts=count()
+    by Timestamp, UserAgent, ErrorCode, AccountUpn, State, Country, IPAddress
+// --- Pie chart: distribution by UserAgent
+// | summarize Attempts=sum(Attempts) by UserAgent
+// | render piechart with (title="Suspicious sign-in attempts by User Agent (last 7 days)")
