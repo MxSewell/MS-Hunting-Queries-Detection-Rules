@@ -34,7 +34,7 @@ let powershellEvents =
     | where (FileName contains "powershell.exe" and (ProcessCommandLine contains "hidden") and ProcessCommandLine contains "http" and ProcessCommandLine !contains "http://localhost") or (FileName contains "mshta.exe" and ProcessCommandLine contains "http" and ProcessCommandLine !contains "http://localhost");
 clipboardEvents
 | join kind=inner (powershellEvents) on DeviceName
-| where abs(datetime_diff('minute', TimeGenerated, TimeGenerated1)) <= 1
+| where abs(datetime_diff('minute', Timestamp, Timestamp1)) <= 1
 | summarize by DeviceName
 ```
 
