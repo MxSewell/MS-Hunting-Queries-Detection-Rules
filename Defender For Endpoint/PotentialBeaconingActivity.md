@@ -24,7 +24,7 @@ DeviceNetworkEvents
 | where not(ipv4_is_private(RemoteIP))
 | where ActionType == 'ConnectionSuccessAggregatedReport'
 | extend Connections = toint(parse_json(AdditionalFields).uniqueEventsAggregated)
-| summarize Total = count(), Devices = dcount(DeviceId), Domains = make_set(RemoteUrl), AvgConnections = avg(Connections) by RemoteIP, bin(TimeGenerated, 1d)
+| summarize Total = count(), Devices = dcount(DeviceId), Domains = make_set(RemoteUrl), AvgConnections = avg(Connections) by RemoteIP, bin(Timestamp, 1d)
 | where AvgConnections >= ConnectionThreshold and Devices <= DeviceThreshold
 | join kind=inner (DeviceNetworkEvents
     | where ActionType == 'ConnectionSuccess'
