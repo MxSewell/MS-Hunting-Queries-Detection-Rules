@@ -13,7 +13,7 @@ If a password has not been changed for years, it might be that the account does 
 
 ## Defender XDR
 ```KQL
-let LatestNChanges = 100;
+let LatestNChanges = 181;
 AADSignInEventsBeta
 | where Timestamp > ago(30d)
 // Collect the last event for each account
