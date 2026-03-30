@@ -36,6 +36,7 @@ let UserAgentsOfInterest = SuspiciousUserAgents
 | distinct StandardizedUserAgent;
 EntraIdSignInEvents
 | where ErrorCode == 0
+| where LogonType != @"[""nonInteractiveUser""]"
 | where UserAgent has_any (UserAgentsOfInterest)
 | project-reorder Timestamp, AccountUpn, LogonType, UserAgent, ErrorCode, SessionId
 ```
