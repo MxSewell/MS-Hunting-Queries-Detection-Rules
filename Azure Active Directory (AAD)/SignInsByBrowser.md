@@ -7,13 +7,15 @@ This query lists all the different browsers that are used to succesfully sign in
 
 
 ## Defender XDR
-```KQLAADSignInEventsBeta
+```KQL
+AADSignInEventsBeta
 | where isnotempty(UserAgent)
 // Filter for successful sign ins only
 | where ErrorCode == 0
 | extend ParsedAgent = parse_json(parse_user_agent(UserAgent, "browser"))
 | extend Browser = strcat(tostring(ParsedAgent.Browser.Family), " ", tostring(ParsedAgent.Browser.MajorVersion), ".", tostring(ParsedAgent.Browser.MinorVersion))
 | summarize Total = count() by Browser
+| where Total <= 200
 | sort by Total
 ```
 
