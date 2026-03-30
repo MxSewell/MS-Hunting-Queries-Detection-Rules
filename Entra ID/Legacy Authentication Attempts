@@ -2,3 +2,16 @@ EntraIdSignInEvents
 | where ClientAppUsed == "Other clients"
 | project Timestamp, Application, AccountUpn, ErrorCode, ClientAppUsed, UserAgent, OSPlatform, Browser
 | order by Timestamp, AccountUpn desc
+
+// Variation of the above script that returns a piechart by user 
+let LegacyTotal = toscalar(
+    EntraIdSignInEvents
+    | where ClientAppUsed == "Other clients"
+    | count
+);
+EntraIdSignInEvents
+| where ClientAppUsed == "Other clients"
+| summarize LegacyAuthCount = count() by AccountUpn
+| extend Percentage = round((todouble(LegacyAuthCount) / LegacyTotal) * 100, 2)
+| project AccountUpn, LegacyAuthCount, Percentage
+| render piechart
