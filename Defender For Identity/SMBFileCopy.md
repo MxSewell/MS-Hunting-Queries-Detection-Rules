@@ -11,7 +11,7 @@
 #### Description
 Adversaries can use SMB to upload files to remote shares or to interact with files on those shares. A common technique is to upload malcious to remote host. This query detects all SMB file copies. In order to run the query effectively add the benign accounts the the whitelist.
 
-A false positive would be a aministrator that would perform legitimate SMB file copies. 
+A false positive would be a administrator that would perform legitimate SMB file copies. 
 
 #### Risk
 A actor uses a SMB file copy to distrubute malware in your environment. 
