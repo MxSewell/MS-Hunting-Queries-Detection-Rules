@@ -7,13 +7,13 @@ This query can be used to draw an report of the Entra ID role memberships for al
 
 ## Defender XDR
 ```KQL
-let TimeFrame = 30d;
+let TimeFrame = 7d;
 IdentityInfo
 | where Timestamp > ago(TimeFrame)
-| summarize arg_max(TimeGenerated, *) by AccountObjectId
+| summarize arg_max(Timestamp, *) by AccountObjectId
 | mv-expand AssignedRoles
 | where isnotempty(AssignedRoles)
-| summarize TotalRoles = dcount(tostring(AssignedRoles)), MemberOf = make_set(tostring(AssignedRoles), 1000) by AccountObjectId, AccountDisplayName, AccountUPN
+| summarize TotalRoles = dcount(tostring(AssignedRoles)), MemberOf = make_set(tostring(AssignedRoles), 1000) by AccountObjectId, AccountDisplayName, AccountUpn
 | extend ReportDate = now()
 | sort by TotalRoles desc  
 ```

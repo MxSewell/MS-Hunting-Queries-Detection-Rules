@@ -3,11 +3,11 @@
 ## Defender XDR
 
 ```
-let ComprimsedUsers = dynamic(['user1', 'user2']);
+let CompromisedUsers = dynamic(['user1', 'user2']);
 let SearchWindow = 48h; //Customizable h = hours, d = days
 IdentityLogonEvents
 | where Timestamp > (now() - SearchWindow)
-| where AccountName has_any (ComprimsedUsers)
+| where AccountName has_any (CompromisedUsers)
 | where isnotempty(TargetDeviceName)
 | where ActionType == "LogonSuccess"
 | project Timestamp, AccountName, Protocol, TargetDeviceName
