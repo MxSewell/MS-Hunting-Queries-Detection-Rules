@@ -31,7 +31,7 @@ AADSignInEventsBeta
 | where not(Application in~ (KnownApps))
 // If the AppID is empty then it is a third party App.
 | extend IsExternalApp = iff(isempty(ApplicationId), 'True', 'False')
-| project-reorder Timestamp, AccountUpn, ErrorCode, IsExternalApp, Application, AccountObjectId, IPAddress, ClientAppUsed
+| project-reorder Timestamp, AccountObjectId, AccountUpn, ErrorCode, IsExternalApp, Application, IPAddress, ClientAppUsed
 ```
 
 ## Sentinel
