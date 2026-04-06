@@ -18,7 +18,8 @@ let KnownUserAgents = AADSignInEventsBeta
 AADSignInEventsBeta
 | where Timestamp > ago(3d)
 | where UserAgent !in (KnownUserAgents)
-| project Timestamp, UserAgent, ErrorCode, AccountObjectId,AccountDisplayName, IPAddress
+| where LogonType != @"[""nonInteractiveUser""]"
+| project Timestamp, UserAgent, ErrorCode, LogonType, AccountDisplayName, IPAddress
 ```
 
 ## Sentinel
