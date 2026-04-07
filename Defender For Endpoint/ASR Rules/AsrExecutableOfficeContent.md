@@ -9,7 +9,7 @@
 | T1137 | Office Application Startup | https://attack.mitre.org/techniques/T1137/ |
 
 #### Description
-The discroption of this ASR rule: This rule prevents Office apps, including Word, Excel, and PowerPoint, from creating potentially malicious executable content, by blocking malicious code from being written to disk.Malware that abuses Office as a vector might attempt to break out of Office and save malicious components to disk. These malicious components would survive a computer reboot and persist on the system. Therefore, this rule defends against a common persistence technique.
+The description of this ASR rule: This rule prevents Office apps, including Word, Excel, and PowerPoint, from creating potentially malicious executable content, by blocking malicious code from being written to disk.Malware that abuses Office as a vector might attempt to break out of Office and save malicious components to disk. These malicious components would survive a computer reboot and persist on the system. Therefore, this rule defends against a common persistence technique.
 
 This query tries to detect persistence via executable office content. Malicious executable files can be loaded when a infected office file is opened. This ASR rule does not generate a alert by default. 
 

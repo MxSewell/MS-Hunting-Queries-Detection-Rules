@@ -35,7 +35,7 @@ An adversary has gained access to an account and tries to disover the network to
 
 ## Defender XDR
 ```KQL
-let StartTime = 2d;
+let StartTime = 7d;
 let BinFormat = 1d;
 let Threshold = 10;
 DeviceProcessEvents

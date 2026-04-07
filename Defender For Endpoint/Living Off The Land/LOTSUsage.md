@@ -5,7 +5,7 @@
 #### Description
 The Living Off Trusted Sites protject is included in the queries below. The project is about: *Attackers are using popular legitimate domains when conducting phishing, C&C, exfiltration and downloading tools to evade detection. The list of websites below allow attackers to use their domain or subdomain.* The query below can be used to hunt for websites which are rare in your organization or are executed by rare *InitiatingFiles*. This query can be used to list all found LOTS domains and how often they are executed, this can serve as input for further investigation or as start for you threat hunting case.
 
-Due to the amount of legitimate traffic this query will likely result in a lot of false positives, therefor is it imporant to look at rare sightings rather then the most common once. Therefor this query only outputs statistics which can be used to build further queries. To limit the false positives, or put websites out of scope, the *WhitelistedDomains* can be used to whitelist domains.
+Due to the amount of legitimate traffic this query will likely result in a lot of false positives, therefor is it imporant to look at rare sightings rather tham the most common ones. Therefore this query only outputs statistics which can be used to build further queries. To limit the false positives, or put websites out of scope, the *WhitelistedDomains* can be used to whitelist domains.
 
 **THIS SHOULD NOT BE USED AS DETECTION RULE**
 
