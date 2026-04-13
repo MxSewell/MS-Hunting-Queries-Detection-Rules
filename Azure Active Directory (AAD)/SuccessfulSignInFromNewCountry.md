@@ -21,7 +21,7 @@ AADSignInEventsBeta
 | where ErrorCode == 0
 | where isnotempty(Country)
 | where Country !in (KnownCountries)
-| project Timestamp, Country, UserAgent, ErrorCode, AccountObjectId,AccountDisplayName, IPAddress
+| project Timestamp, City, Country, Application, UserAgent, ErrorCode, AccountObjectId,AccountDisplayName, IPAddress
 ```
 
 ## Sentinel
