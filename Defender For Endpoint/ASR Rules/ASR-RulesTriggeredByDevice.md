@@ -15,6 +15,17 @@ DeviceEvents
 | summarize count() by DeviceName
 | sort by count_
 ```
+#### If you want to return raw events for a specific device
+DeviceEvents
+| where ActionType startswith "Asr"
+| where DeviceName == "CONTOSO-LAPTOP01"
+| sort by Timestamp desc
+
+#### If you want to return blocked only events
+DeviceEvents
+| where ActionType !contains "Audited"
+| sort by Timestamp desc
+
 ## Sentinel
 ```
 DeviceEvents
