@@ -1,0 +1,12 @@
+
+#### This query seeks to uncover potential beaconing activity in your tenant. Each result may not necessarily be indicative of compromise, rather a jump point to commence investigations
+
+DeviceNetworkEvents
+| where RemoteIPType == "Public"
+| where DeviceName has "LAPTOP1@CONTOSO.COM"
+| summarize
+    FirstSeen=min(Timestamp),
+    LastSeen=max(Timestamp),
+    Count=count()
+  by DeviceName, InitiatingProcessFileName, RemoteIP
+| order 

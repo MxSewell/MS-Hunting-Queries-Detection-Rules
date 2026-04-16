@@ -1,0 +1,7 @@
+
+
+## This query seeks to discover if a particular device made exclusions. It is recommended that admins disable the ability for local admins to make Defender exlusions in Group Policy as failing to do so allows people to exclude and run whatever they want - including tools for C2 comms.
+
+DeviceRegistryEvents
+| where RegistryKey has @"Windows Defender\Exclusions"
+| where DeviceId == "2af60297377882377d23780f2beed5be981bf8c4"

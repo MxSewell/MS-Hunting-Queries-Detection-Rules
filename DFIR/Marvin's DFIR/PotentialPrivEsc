@@ -1,0 +1,9 @@
+
+
+### This query endeavors to uncover service accounts performing interactive logons in addition to lateral movement perfomed after Kerberoasting activity.
+
+IdentityLogonEvents
+| where LogonType in ("Interactive","RemoteInteractive","Kerberos")
+| summarize
+    LogonCount=count()
+  by AccountUpn, DeviceName
