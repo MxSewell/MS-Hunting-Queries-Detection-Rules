@@ -7,3 +7,36 @@ IdentityLogonEvents
 | summarize
     LogonCount=count()
   by AccountUpn, DeviceName
+
+#### Should you want to scope by specific accounts referenced with in~ (case‑insensitive) or in (case‑sensitive).
+
+let TargetAccounts = dynamic([
+    "janedoe@contoso.com",
+    "johndoe@fabrikam.com"
+]);
+IdentityLogonEvents
+| where LogonType in ("Interactive","RemoteInteractive")
+| where AccountUpn in~ (TargetAccounts)
+| summarize LogonCount = count()
+  by AccountUpn, DeviceName
+
+  #### Should you prefer to remove the aggregation and project the fields you actually care about
+  
+let TargetAccounts = dynamic([
+    "janedoe@contoso.com",
+    "johndoe@fabrikam.com"
+]);
+IdentityLogonEvents
+| where Timestamp between (datetime(2026-03-24) .. datetime(2026-03-27))
+| where LogonType in ("Interactive", "RemoteInteractive", "Kerberos")
+| where AccountUpn in~ (TargetAccounts)
+| project
+    Timestamp,
+    AccountUpn,
+    AccountName,
+    LogonType,
+    DeviceName,
+    IPAddress,
+    Application,
+    FailureReason
+| order by Timestamp desc
