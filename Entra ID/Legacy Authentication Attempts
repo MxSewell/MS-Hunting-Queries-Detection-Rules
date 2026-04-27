@@ -1,9 +1,11 @@
+
+
 EntraIdSignInEvents
 | where ClientAppUsed == "Other clients"
 | project Timestamp, Application, AccountUpn, ErrorCode, ClientAppUsed, UserAgent, OSPlatform, Browser
 | order by Timestamp, AccountUpn desc
 
-// Variation of the above script that returns a piechart by user 
+### Variation of the above script that returns a piechart by user 
 let LegacyTotal = toscalar(
     EntraIdSignInEvents
     | where ClientAppUsed == "Other clients"
