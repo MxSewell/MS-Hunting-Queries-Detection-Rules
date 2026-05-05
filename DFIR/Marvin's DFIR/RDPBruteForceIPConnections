@@ -1,0 +1,44 @@
+
+
+#### Enumerate connection attempts from malicious infrastructure
+KQL
+```
+let SuspiciousIPs = dynamic([
+  "2.57.170.212","2.57.170.109",
+  "45.8.17.12","45.8.17.94","45.8.17.95","45.8.17.197","45.8.17.245",
+  "45.128.199.101","45.128.199.200",
+  "45.148.10.74",
+  "80.94.95.51","80.94.95.54","80.94.95.99",
+  "91.238.181.10",
+  "103.75.183.165",
+  "107.180.102.1",
+  "195.178.110.44",
+  "212.30.33.65","212.30.33.72"
+]);
+union isfuzzy=true
+(
+  DeviceNetworkEvents
+  | where RemoteIP in (SuspiciousIPs)
+  | project Timestamp, DeviceName, ReportId, RemoteIP, RemotePort, LocalPort,
+            ActionType, Protocol, InitiatingProcessFileName,
+            InitiatingProcessCommandLine, InitiatingProcessAccountName
+),
+(
+  DeviceLogonEvents
+  | where RemoteIP in (SuspiciousIPs)
+  | project Timestamp, DeviceName, ReportId, RemoteIP, ActionType, LogonType,
+            AccountName, AccountDomain, FailureReason
+),
+(
+  IdentityLogonEvents
+  | where IPAddress in (SuspiciousIPs)
+  | project Timestamp, ReportId, IPAddress, ActionType,
+            AccountUpn, Application, FailureReason
+),
+(
+  DeviceEvents
+  | where RemoteIP in (SuspiciousIPs)
+  | project Timestamp, DeviceName, ReportId, RemoteIP,
+            ActionType, AdditionalFields
+)
+| order by Timestamp asc

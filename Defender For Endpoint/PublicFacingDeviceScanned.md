@@ -26,6 +26,20 @@ DeviceNetworkEvents
 | evaluate bag_unpack(AdditionalFieldsDynamic)
 | project Timestamp, DeviceName, PublicScannedIp, PublicScannedPort
 ```
+## Include public IP and port details
+```
+DeviceNetworkEvents
+| where ActionType == "InboundInternetScanInspected"
+| extend AdditionalFieldsDynamic = todynamic(AdditionalFields)
+| evaluate bag_unpack(AdditionalFieldsDynamic)
+| summarize
+    ScanCount = count(),
+    ScannedIPs = make_set(PublicScannedIp),
+    ScannedPorts = make_set(PublicScannedPort)
+  by DeviceName
+| order by ScanCount desc
+```
+
 ## Sentinel
 ```
 DeviceNetworkEvents

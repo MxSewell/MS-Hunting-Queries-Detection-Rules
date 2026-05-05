@@ -2,4 +2,4 @@
 EntraIdSignInEvents
 | where Timestamp >= ago(7d)
 | where IPAddress contains "23.94.232.197"
-| project Timestamp, Application, AccountUpn, UserAgent, IPAddress, City, State
+| project Timestamp, Application, AccountUpn, UserAgent, IPAddress, City, State. RiskLevelDuringSignIn, RiskState
