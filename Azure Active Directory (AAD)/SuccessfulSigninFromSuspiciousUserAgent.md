@@ -31,7 +31,7 @@ let UserAgentsOfInterest = SuspiciousUserAgents
     "Defense Evasion",
     "POST Exploitation",
     "Bots & Vulnerability Scanner",
-    "uncommun user agent")
+    "uncommon user agent")
 | extend StandardizedUserAgent = replace_string(http_user_agent, "*", "")
 | distinct StandardizedUserAgent;
 EntraIdSignInEvents
