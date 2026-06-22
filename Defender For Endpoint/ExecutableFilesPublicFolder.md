@@ -21,7 +21,7 @@ An adversary creates payloads in the C:\Users\Public to stay undetected.
 // The start of the folderpath in the Public directory.
 let PublicFolder = @'C:\Users\Public';
 // List with Executable File Extensions, can be adjusted or changed.
-let ExecutableFileExtensions = dynamic(['bat', 'cmd', 'com', 'cpl', 'ex', 'exe', 'jse', 'msc','ps1', 'reg', 'vb', 'vbe', 'ws', 'wsf', 'hta']);
+let ExecutableFileExtensions = dynamic(['bat', 'cmd', 'com', 'cpl', 'ex', 'exe', 'jse', 'msc','ps1', 'reg', 'vb', 'vbe', 'ws', 'wsf', 'hta', 'js']);
 // Prevalence Threshold, if the file exceeds this threshold it is likely to be benign.
 let FilePrevalenceThreshold = 250;
 DeviceFileEvents
