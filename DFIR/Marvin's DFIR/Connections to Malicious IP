@@ -1,0 +1,25 @@
+// Set the IP address you are trying to lookup.
+let LookupIP = "84.247.182.221";
+let SearchWindow = 7d; //Customizable h = hours, d = days
+// Collect all network evets to the RemoteIP
+let NewtworkEvents = DeviceNetworkEvents
+     | where Timestamp > ago(SearchWindow)
+     | where RemoteIP == LookupIP
+     | project Timestamp, DeviceName, ActionType, RemoteIP, RemotePort, RemoteUrl, InitiatingProcessCommandLine, InitiatingProcessAccountSid;
+// Collect all commandline references of the IP
+let CommandLineReferences = DeviceProcessEvents
+     | where Timestamp > ago(SearchWindow)
+     | where ProcessCommandLine contains LookupIP
+     | project Timestamp, DeviceName, ActionType, FolderPath, ProcessCommandLine, AccountSid;
+// Combine results
+(union isfuzzy=true
+     (NewtworkEvents),
+     (CommandLineReferences)
+     // If you do want to have raw logs remove the summarize below.
+     // CommandLines and RemoteURLs can both be empty if there is no Commandline reference and a connection is only made to a IP not to a URL.
+     | summarize RemoteURLs = make_set(RemoteUrl), CommandLines = make_set(ProcessCommandLine), LastMention = arg_max(Timestamp, *) by DeviceName
+     // Add filter posibility to alter the search results if you only want to see commandline references. By default it includes both network and commandline references. If you only want to see commandline references uncommment the statment CommandLineReference == true
+     | extend CommandLineReference = iff(CommandLines == @'[""]', false, true)
+     //| where CommandLineReference == true
+     | project-reorder LastMention, DeviceName, RemoteIP
+     | sort by LastMention)
