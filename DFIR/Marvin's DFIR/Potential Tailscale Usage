@@ -1,0 +1,36 @@
+// Look for known Tailscale indicators across multiple telemetry tables
+let tailscaleKeywords = dynamic([
+    "tailscale",
+    "tailscaled",
+    "tsnet",
+    "login.tailscale.com",
+    "controlplane.tailscale.com",
+    "log.tailscale.com"
+]);
+// Process execution
+let processEvents = DeviceProcessEvents
+| where Timestamp > ago(30d)
+| where ProcessCommandLine has_any (tailscaleKeywords)
+    or FileName has_any (tailscaleKeywords)
+| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine, InitiatingProcessFileName;
+// Network connections (Tailscale control traffic commonly over 443/UDP/DERP relays)
+let networkEvents = DeviceNetworkEvents
+| where Timestamp > ago(30d)
+| where RemoteUrl has_any (tailscaleKeywords)
+    or InitiatingProcessFileName has_any (tailscaleKeywords)
+| project Timestamp, DeviceName, InitiatingProcessFileName, RemoteUrl, RemoteIP, RemotePort, Protocol;
+// DNS queries
+let dnsEvents = DeviceEvents
+| where Timestamp > ago(30d)
+| where ActionType == "DnsQuery"
+| where AdditionalFields has_any (tailscaleKeywords)
+| project Timestamp, DeviceName, ActionType, AdditionalFields;
+// File creation (Tailscale binaries or artifacts)
+let fileEvents = DeviceFileEvents
+| where Timestamp > ago(30d)
+| where FileName has_any (tailscaleKeywords)
+    or FolderPath has_any (tailscaleKeywords)
+| project Timestamp, DeviceName, FileName, FolderPath, InitiatingProcessFileName;
+// Combine results
+union processEvents, networkEvents, dnsEvents, fileEvents
+| sort by Timestamp desc
