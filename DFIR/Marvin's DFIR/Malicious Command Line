@@ -1,0 +1,13 @@
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where DeviceName == @"Insert Device Here"
+| where ProcessCommandLine has_any (
+    "finger",
+    "for /f",
+    "b-cdn.net",
+    "pythonw.exe",
+    ".pyc",
+    "ProgramData\\Pyt2hon"
+)
+| project Timestamp, DeviceName, FileName, ProcessCommandLine, InitiatingProcessCommandLine
+| order by Timestamp desc
