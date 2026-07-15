@@ -1,0 +1,13 @@
+UrlClickEvents
+| where Timestamp > ago (10hr)
+| where Workload == "Email"
+| where AccountUpn =~ "Insert UPN Here"
+| project Timestamp,
+          AccountUpn,
+          Url,
+          ActionType,
+          ThreatTypes,
+          IsClickedThrough,
+          NetworkMessageId,
+          IPAddress
+| order by Timestamp desc
