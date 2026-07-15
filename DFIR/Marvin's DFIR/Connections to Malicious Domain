@@ -1,0 +1,9 @@
+let domain = "Insert Domain Here";
+union DeviceNetworkEvents, DeviceProcessEvents, DeviceEvents, DeviceFileEvents
+| where Timestamp > ago(30d)
+| where tostring(RemoteUrl) has domain
+    or tostring(RemoteIP) has domain
+    or ProcessCommandLine has domain
+    or InitiatingProcessCommandLine has domain
+| project Timestamp, DeviceName, ActionType, RemoteUrl, RemoteIP, ProcessCommandLine, InitiatingProcessCommandLine, FileName
+| order by Timestamp desc
