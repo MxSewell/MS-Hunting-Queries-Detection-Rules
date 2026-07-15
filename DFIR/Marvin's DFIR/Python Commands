@@ -1,0 +1,19 @@
+let CompromisedDevice = "Insert Device Here";
+let SearchWindow = 7d; //Customizable h = hours, d = days
+DeviceProcessEvents
+| where Timestamp > ago(SearchWindow)
+| where DeviceName == CompromisedDevice
+| where not(AccountSid == "S-1-5-18") // If you suspect that the system user is compromised, remove this filter.
+| where InitiatingProcessFileName == "powershell.exe"
+| where FileName == @"pythonw.exe"
+| sort by Timestamp
+| top 100 by Timestamp
+| project
+     Timestamp,
+     DeviceName,
+     ActionType,
+     FileName,
+     ProcessCommandLine,
+     AccountDomain,
+     AccountName,
+     InitiatingProcessCommandLine
